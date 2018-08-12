@@ -15,3 +15,26 @@ button {
 #logout-button {
   margin-left: 10px;
 }
+
+#login-button {
+  margin-top: 10px;
+}
+
+#create-button {
+  margin-top: 10px;
+}
+
+.error {
+  border: 1px solid black;
+  width: 250px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.success {
+  border: 1px solid black;
+  width: 250px;
+  padding: 10px;
+  color: darkgreen;
+  margin-bottom: 10px;
+}

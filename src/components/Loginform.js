@@ -1,6 +1,7 @@
 import React from 'react'
+import '../App.css'
 
-const Loginform = ({ login, username, password, handleLoginChange}) => {
+const Loginform = ({ login, username, password, handleFieldChange}) => {
   return (
     <div>
       <h3>login</h3>
@@ -11,7 +12,7 @@ const Loginform = ({ login, username, password, handleLoginChange}) => {
             type='text'
             name='username'
             value={username}
-            onChange={handleLoginChange}
+            onChange={handleFieldChange}
           />
         </div>
         <div>
@@ -20,10 +21,10 @@ const Loginform = ({ login, username, password, handleLoginChange}) => {
             type='password'
             name='password'
             value={password}
-            onChange={handleLoginChange}
+            onChange={handleFieldChange}
           />
         </div>
-        <button type='submit'>login</button>
+        <button id='login-button' type='submit'>login</button>
       </form>
     </div>
   )

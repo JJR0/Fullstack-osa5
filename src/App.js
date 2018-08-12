@@ -5,6 +5,7 @@ import loginService from './services/login'
 import './App.css'
 import Loginform from './components/Loginform'
 import Blogform from './components/Blogform'
+import Notification from './components/Notification'
 
 class App extends React.Component {
   constructor(props) {
@@ -16,7 +17,8 @@ class App extends React.Component {
       user: null,
       title: '',
       author: '',
-      url: ''
+      url: '',
+      error: null
     }
   }
 
@@ -31,10 +33,6 @@ class App extends React.Component {
       this.setState({user})
       blogService.setToken(user.token)
     }
-  }
-
-  handleLoginChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value })
   }
 
   handleFieldChange = (event) => {
@@ -53,7 +51,10 @@ class App extends React.Component {
       blogService.setToken(user.token)
       this.setState({ username: '', password: '', user})
     } catch (exception) {
-      console.log('kirjautuminen ei onnistunut')
+      this.setState({ error: 'unsuccess' })
+      setTimeout(() => {
+        this.setState({ error: null })
+      }, 3000);
     }
   }
 
@@ -75,8 +76,13 @@ class App extends React.Component {
         blogs: this.state.blogs.concat(newBlog),
         title: '',
         author: '',
-        url: ''
+        url: '',
+        error: 'success'
       })
+
+      setTimeout(() => {
+        this.setState({ error: null })
+      }, 3000);
 
     } catch (exception) {
       console.log('exception: ', exception)
@@ -86,17 +92,21 @@ class App extends React.Component {
   render() {
     if (this.state.user === null) {
       return (
-        <Loginform 
-          login={this.login}
-          username={this.state.username}
-          password={this.state.password}
-          handleLoginChange={this.handleLoginChange}
-          />
+        <div>
+          <Notification error={this.state.error} />
+          <Loginform 
+            login={this.login}
+            username={this.state.username}
+            password={this.state.password}
+            handleFieldChange={this.handleFieldChange}
+            />
+        </div>
       )
     }
 
     return (
       <div>
+        <Notification error={this.state.error} newBlog={this.state.blogs[this.state.blogs.length-1]}/>
         {this.state.user.username} is logged in
         <button id='logout-button' onClick={this.logout}>log out</button>
         <p/>

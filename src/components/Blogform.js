@@ -1,4 +1,5 @@
 import React from 'react'
+import '../App.css'
 
 const Blogform = ({ addBlog, title, author, url, handleFieldChange }) => {
   return (
@@ -32,7 +33,7 @@ const Blogform = ({ addBlog, title, author, url, handleFieldChange }) => {
             onChange={handleFieldChange}
           />
         </div>
-        <button type='submit'>create</button>
+        <button id='create-button' type='submit'>create</button>
       </form>
     </div>
   )
