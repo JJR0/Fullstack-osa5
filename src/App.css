@@ -5,8 +5,13 @@ body {
 
 input {
   margin-left: 10px;
+  width: 100px;
 }
 
 button {
   font-family: 'Hanalei Fill', cursive;
+}
+
+#logout-button {
+  margin-left: 10px;
 }
