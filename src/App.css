@@ -18,10 +18,12 @@ button {
 
 #login-button {
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 #create-button {
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .error {

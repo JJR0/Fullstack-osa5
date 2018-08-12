@@ -6,6 +6,7 @@ import './App.css'
 import Loginform from './components/Loginform'
 import Blogform from './components/Blogform'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 class App extends React.Component {
   constructor(props) {
@@ -94,12 +95,14 @@ class App extends React.Component {
       return (
         <div>
           <Notification error={this.state.error} />
-          <Loginform 
-            login={this.login}
-            username={this.state.username}
-            password={this.state.password}
-            handleFieldChange={this.handleFieldChange}
-            />
+          <Togglable buttonLabel='login'>
+            <Loginform 
+              login={this.login}
+              username={this.state.username}
+              password={this.state.password}
+              handleFieldChange={this.handleFieldChange}
+              />
+            </Togglable>
         </div>
       )
     }
@@ -110,7 +113,6 @@ class App extends React.Component {
         {this.state.user.username} is logged in
         <button id='logout-button' onClick={this.logout}>log out</button>
         <p/>
-
         <Blogform
           addBlog={this.addBlog}
           title={this.state.title}
