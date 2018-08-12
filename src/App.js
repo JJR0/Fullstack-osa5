@@ -3,6 +3,8 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css'
+import Loginform from './components/Loginform'
+import Blogform from './components/Blogform'
 
 class App extends React.Component {
   constructor(props) {
@@ -11,7 +13,10 @@ class App extends React.Component {
       blogs: [],
       username: '',
       password: '',
-      user: null
+      user: null,
+      title: '',
+      author: '',
+      url: ''
     }
   }
 
@@ -24,10 +29,15 @@ class App extends React.Component {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       this.setState({user})
+      blogService.setToken(user.token)
     }
   }
 
   handleLoginChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+  }
+
+  handleFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
@@ -40,7 +50,7 @@ class App extends React.Component {
       })
 
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-
+      blogService.setToken(user.token)
       this.setState({ username: '', password: '', user})
     } catch (exception) {
       console.log('kirjautuminen ei onnistunut')
@@ -52,42 +62,55 @@ class App extends React.Component {
     this.setState({ user: null })
   }
 
+  addBlog = async (event) => {
+    event.preventDefault()
+    try {
+      const newBlog = await blogService.create({
+        title: this.state.title,
+        author: this.state.author,
+        url: this.state.url
+      })
+
+      this.setState({ 
+        blogs: this.state.blogs.concat(newBlog),
+        title: '',
+        author: '',
+        url: ''
+      })
+
+    } catch (exception) {
+      console.log('exception: ', exception)
+    }
+  }
+
   render() {
     if (this.state.user === null) {
       return (
-        <div>
-          <h3>login</h3>
-          <form onSubmit={this.login}>
-            <div>
-              username
-              <input
-                type='text'
-                name='username'
-                value={this.state.username}
-                onChange={this.handleLoginChange}
-              />
-            </div>
-            <div>
-              password
-              <input
-                type='password'
-                name='password'
-                value={this.state.password}
-                onChange={this.handleLoginChange}
-              />
-            </div>
-            <button type='submit'>login</button>
-          </form>
-        </div>
+        <Loginform 
+          login={this.login}
+          username={this.state.username}
+          password={this.state.password}
+          handleLoginChange={this.handleLoginChange}
+          />
       )
     }
 
     return (
       <div>
-        <h2>blogs</h2>
         {this.state.user.username} is logged in
         <button id='logout-button' onClick={this.logout}>log out</button>
         <p/>
+
+        <Blogform
+          addBlog={this.addBlog}
+          title={this.state.title}
+          author={this.state.author}
+          url={this.state.url}
+          handleFieldChange={this.handleFieldChange}
+          />
+        <p/>
+
+        <h3>all blogs</h3>
         {this.state.blogs.map(blog => 
           <Blog key={blog.id} blog={blog}/>
         )}
